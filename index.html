@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Даниил Игнатьев — Game Creator</title>
   <meta name="description" content="Даниил Игнатьев: браузерные игры, сделанные с AI-агентами. Играйте прямо в браузере.">
-  <meta property="og:title" content="Даниил Игнатьев — Game Creator">
-  <meta property="og:description" content="Браузерные игры, в которые можно сыграть прямо сейчас: без установки, по одной ссылке.">
+  <meta property="og:title" content="Daniil Ignatev — Game Creator">
+  <meta property="og:description" content="Browser games you can play right now: no install, just one link. · Браузерные игры, в которые можно сыграть прямо сейчас.">
   <meta property="og:image" content="assets/img/covers/cracker-hero-1280.webp">
   <meta name="theme-color" content="#ece7d8">
   <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
@@ -16,10 +16,16 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <!-- Visible text below is the Russian fallback; main.js swaps it using i18n.js -->
   <header class="nav">
     <div class="wrap nav__inner">
-      <a class="nav__logo" href="#top"><img src="assets/logo/mark-light.svg" width="34" height="34" alt="Даниил Игнатьев — на главную"></a>
-      <nav class="nav__links"><a href="#games">Игры</a><a href="#about">Обо мне</a><a href="#contact">Контакты</a></nav>
+      <a class="nav__logo" href="#top"><img src="assets/logo/mark-light.svg" width="34" height="34" alt="Даниил Игнатьев — на главную" data-i18n-alt="nav.home"></a>
+      <div class="nav__right">
+        <nav class="nav__links"><a href="#games" data-i18n="nav.games">Игры</a><a href="#about" data-i18n="nav.about">Обо мне</a><a href="#contact" data-i18n="nav.contact">Контакты</a></nav>
+        <div class="lang" role="group" aria-label="Язык" data-i18n-aria="nav.lang">
+          <button type="button" data-lang="ru" lang="ru">RU</button><button type="button" data-lang="en" lang="en">EN</button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -28,72 +34,73 @@
     <div class="wrap hero__content">
       <div class="hero__text" id="heroText">
         <p class="eyebrow"><span>AI Game Creator · Game Designer</span></p>
-        <h1 class="name"><span class="name__first">Даниил</span><span class="name__last">Игнатьев</span></h1>
-        <p class="lead">Делаю браузерные игры, в которые можно сыграть прямо сейчас: без установки, по одной ссылке.</p>
-        <p class="meta label"><span>Вьетнам · удалённо</span><b>Открыт к работе</b></p>
+        <h1 class="name"><span class="name__first" data-i18n="hero.first">Даниил</span><span class="name__last" data-i18n="hero.last">Игнатьев</span></h1>
+        <p class="lead" data-i18n="hero.lead">Делаю браузерные игры, в которые можно сыграть прямо сейчас: без установки, по одной ссылке.</p>
+        <p class="meta label"><span data-i18n="hero.place">Вьетнам · удалённо</span><b data-i18n="hero.open">Открыт к работе</b></p>
         <div class="actions">
-          <a class="btn btn--primary" href="#games" id="toGames"><span>▶ Играть</span></a>
-          <a class="btn" href="#about"><span>Обо мне</span></a>
+          <a class="btn btn--primary" href="#games" id="toGames"><span data-i18n="hero.play">▶ Играть</span></a>
+          <a class="btn" href="#about"><span data-i18n="nav.about">Обо мне</span></a>
         </div>
       </div>
     </div>
   </section>
 
   <main>
-    <!-- Облака: витрина игр -->
+    <!-- Clouds: game showcase -->
     <section class="band band--clouds" id="games">
       <div class="wrap">
-        <h2>Игры</h2>
-        <!-- Блок «Сейчас» и карточки собираются из games.js -->
-        <ul class="now" id="now" aria-label="Сейчас"></ul>
+        <h2 data-i18n="games.title">Игры</h2>
+        <!-- The "Now" block and the cards are built from games.js -->
+        <ul class="now" id="now" aria-label="Сейчас" data-i18n-aria="games.now"></ul>
         <div class="games" id="gameList"></div>
         <noscript>
-          <p class="band__text">Витрина игр работает на JavaScript. Ссылки на игры:
-            <a href="https://www.crazygames.com/game/cracker-hero">Cracker Hero на CrazyGames</a>,
-            <a href="https://playgama.com/game/loose-change-cashier-simulator">Loose Change на Playgama</a>.</p>
+          <p class="band__text">
+            <a href="https://www.crazygames.com/game/cracker-hero">Cracker Hero — CrazyGames</a> ·
+            <a href="https://playgama.com/game/loose-change-cashier-simulator">Loose Change — Playgama</a>
+          </p>
         </noscript>
       </div>
     </section>
 
-    <!-- Горизонт: обо мне -->
+    <!-- Horizon: about -->
     <section class="band band--horizon" id="about">
       <div class="wrap">
-        <h2>Обо мне</h2>
+        <h2 data-i18n="about.title">Обо мне</h2>
         <div class="about">
           <div class="about__story">
-            <p>Раньше я автоматизировал разметку данных для ИИ. Потом сыграл в Children of Morta — и захотел делать игры сам.</p>
-            <p>Экспериментировать начал в 2021-м, всерьёз занимаюсь с 2025-го. Люблю весь цикл, от идеи до релиза, но больше всего — полировать механики, пока игра не начнёт ощущаться правильно.</p>
-            <p>Игры делаю вместе с AI-агентами: это скорость. Я придумываю механику, пишу спецификации, проверяю код и поведение игры; агенты пишут реализацию. Ответственность за сборку остаётся у меня.</p>
+            <p data-i18n="about.p1">Раньше я автоматизировал разметку данных для ИИ. Потом сыграл в Children of Morta — и захотел делать игры сам.</p>
+            <p data-i18n="about.p2">Экспериментировать начал в 2021-м, всерьёз занимаюсь с 2025-го. Люблю весь цикл, от идеи до релиза, но больше всего — полировать механики, пока игра не начнёт ощущаться правильно.</p>
+            <p data-i18n="about.p3">Игры делаю вместе с AI-агентами: это скорость. Я придумываю механику, пишу спецификации, проверяю код и поведение игры; агенты пишут реализацию. Ответственность за сборку остаётся у меня.</p>
           </div>
           <aside class="plays">
-            <h3>Во что играю</h3>
+            <h3 data-i18n="about.plays">Во что играю</h3>
             <ul>
-              <li><b>Settlers 3</b><span>стратегия</span></li>
-              <li><b>Dawn of War</b><span>стратегия</span></li>
-              <li><b>Metro Exodus</b><span>AAA-шутер</span></li>
-              <li><b>Disco Elysium</b><span>RPG</span></li>
-              <li><b>I Am Future</b><span>для отдыха</span></li>
+              <li><b>Settlers 3</b><span data-i18n="genre.strategy">стратегия</span></li>
+              <li><b>Dawn of War</b><span data-i18n="genre.strategy">стратегия</span></li>
+              <li><b>Metro Exodus</b><span data-i18n="genre.shooter">AAA-шутер</span></li>
+              <li><b>Disco Elysium</b><span data-i18n="genre.rpg">RPG</span></li>
+              <li><b>I Am Future</b><span data-i18n="genre.unwind">для отдыха</span></li>
             </ul>
           </aside>
         </div>
         <div class="process">
-          <h3>Как я делаю игры</h3>
-          <p>Шесть шагов, которые повторяются для каждой фичи.</p>
+          <h3 data-i18n="process.title">Как я делаю игры</h3>
+          <p data-i18n="process.text">Шесть шагов, которые повторяются для каждой фичи.</p>
           <ol class="pipeline"><li>Concept</li><li>Specification</li><li>AI Implementation</li><li>Review</li><li>Iteration</li><li>Release</li></ol>
         </div>
       </div>
     </section>
 
-    <!-- Холмы: работа и контакты -->
+    <!-- Hills: work and contacts -->
     <section class="band band--hills" id="contact">
       <div class="wrap hire">
         <div>
-          <h2>Ищу работу</h2>
+          <h2 data-i18n="hire.title">Ищу работу</h2>
           <div class="roles"><span><i>AI Game Creator</i></span><span><i>Game Designer</i></span></div>
           <ul class="hire__facts">
-            <li>Удалённо, из Вьетнама</li>
-            <li>Браузерные игры: от прототипа до публикации на площадках</li>
-            <li>Исходники проектов покажу по запросу</li>
+            <li data-i18n="hire.f1">Удалённо, из Вьетнама</li>
+            <li data-i18n="hire.f2">Браузерные игры: от прототипа до публикации на площадках</li>
+            <li data-i18n="hire.f3">Исходники проектов покажу по запросу</li>
           </ul>
         </div>
         <div class="contacts">
@@ -106,9 +113,10 @@
   </main>
 
   <footer class="band band--earth">
-    <div class="wrap"><img src="assets/logo/mark-dark.svg" width="40" height="40" alt="Знак Даниила Игнатьева"><span>© 2026 Даниил Игнатьев</span></div>
+    <div class="wrap"><img src="assets/logo/mark-dark.svg" width="40" height="40" alt="Знак Даниила Игнатьева" data-i18n-alt="footer.mark"><span data-i18n="footer.copy">© 2026 Даниил Игнатьев</span></div>
   </footer>
 
+  <script src="i18n.js"></script>
   <script src="games.js"></script>
   <script src="main.js"></script>
 </body>

@@ -1,22 +1,38 @@
-// ---------- Витрина игр: карточки собираются из games.js ----------
+// ---------- Language and game showcase ----------
+// Language: ?lang=ru|en in the URL, then the visitor's saved choice, then the browser's first language
+// (Russian for ru, English for everything else). The cards are rebuilt from games.js on every switch.
 (() => {
-  const data = window.SITE_GAMES;
-  if (!data) return;
+  const DICT = window.SITE_I18N || {};
+  const LANGS = ['ru', 'en'];
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const tags = list => list && list.length ? `<ul class="tags">${list.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : '';
-  const link = (l, primary) => `<a class="btn${primary ? ' btn--primary' : ''}" href="${esc(l.url)}" target="_blank" rel="noopener"><span>${esc(l.label)}</span></a>`;
+  let lang = 'ru';
+  // a text field is either a plain string or { ru, en }
+  const t = v => (v && typeof v === 'object' && !Array.isArray(v) ? (v[lang] ?? v.ru ?? '') : v);
+  const tx = v => esc(t(v));
+
+  function detect() {
+    const q = new URLSearchParams(location.search).get('lang');
+    if (LANGS.includes(q)) return q;
+    try { const s = localStorage.getItem('site-lang'); if (LANGS.includes(s)) return s; } catch (e) {}
+    const first = (navigator.languages && navigator.languages[0]) || navigator.language || '';
+    return /^ru\b/i.test(first) ? 'ru' : 'en';
+  }
+
+  /* ---------- Game cards ---------- */
+  const tags = list => list && list.length ? `<ul class="tags">${list.map(x => `<li>${tx(x)}</li>`).join('')}</ul>` : '';
+  const link = (l, primary) => `<a class="btn${primary ? ' btn--primary' : ''}" href="${esc(l.url)}" target="_blank" rel="noopener"><span>${tx(l.label)}</span></a>`;
   const notes = (list, one) => list && list.length
-    ? `<div class="how__grid${one ? ' how__grid--one' : ''}">${list.map(n => `<div class="info"><h4>${esc(n.title)}</h4><p>${esc(n.text)}</p></div>`).join('')}</div>` : '';
+    ? `<div class="how__grid${one ? ' how__grid--one' : ''}">${list.map(n => `<div class="info"><h4>${tx(n.title)}</h4><p>${tx(n.text)}</p></div>`).join('')}</div>` : '';
   const shots = list => list && list.length
-    ? `<div class="shots${list.length === 2 ? ' shots--two' : ''}">${list.map(s => `<figure><img src="${esc(s.src)}" width="${s.w}" height="${s.h}" alt="${esc(s.alt)}" loading="lazy"><figcaption>${esc(s.caption)}</figcaption></figure>`).join('')}</div>` : '';
+    ? `<div class="shots${list.length === 2 ? ' shots--two' : ''}">${list.map(s => `<figure><img src="${esc(s.src)}" width="${s.w}" height="${s.h}" alt="${tx(s.alt)}" loading="lazy"><figcaption>${tx(s.caption)}</figcaption></figure>`).join('')}</div>` : '';
 
   function cover(g, i) {
     const c = g.cover || {};
     if (c.image) {
       const pos = c.position ? ` style="object-position: ${esc(c.position)}"` : '';
-      return `<figure class="game__cover"><img src="${esc(c.image)}-1280.webp" srcset="${esc(c.image)}-640.webp 640w, ${esc(c.image)}-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 640px" width="1280" height="720"${pos} alt="${esc(c.alt)}"${i ? ' loading="lazy"' : ''}></figure>`;
+      return `<figure class="game__cover"><img src="${esc(c.image)}-1280.webp" srcset="${esc(c.image)}-640.webp 640w, ${esc(c.image)}-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 640px" width="1280" height="720"${pos} alt="${tx(c.alt)}"${i ? ' loading="lazy"' : ''}></figure>`;
     }
-    // обложки нет: воксельное сердце (рисует main.js ниже) или пустая плашка неба
+    // no cover: a voxel heart (drawn below) or a plain sky panel
     return `<figure class="game__cover voxels" aria-hidden="true"><div class="voxels__grid"${c.placeholder === 'voxels' ? ' data-voxels' : ''}></div></figure>`;
   }
 
@@ -26,8 +42,8 @@
     let body = tags(g.stack);
     if (h.extra) {
       const x = h.extra;
-      body += notes(h.notes) + `<div class="sub"><div><h4>${esc(x.title)}</h4><p>${esc(x.text)}</p>`
-        + (x.facts ? `<ul class="facts">${x.facts.map(f => `<li><b>${esc(f.value)}</b> — ${esc(f.text)}</li>`).join('')}</ul>` : '')
+      body += notes(h.notes) + `<div class="sub"><div><h4>${tx(x.title)}</h4><p>${tx(x.text)}</p>`
+        + (x.facts ? `<ul class="facts">${x.facts.map(f => `<li><b>${tx(f.value)}</b> — ${tx(f.text)}</li>`).join('')}</ul>` : '')
         + (x.link ? `<div class="game__cta game__cta--sub">${link(x.link, false)}</div>` : '')
         + `</div>${shots(x.shots)}</div>`;
     } else if (h.shots) {
@@ -35,34 +51,101 @@
     } else {
       body += notes(h.notes);
     }
-    return `<details class="how"><summary>Как сделано</summary><div class="how__body">${body}</div></details>`;
+    return `<details class="how"><summary>${esc(DICT[lang]['games.how'])}</summary><div class="how__body">${body}</div></details>`;
   }
 
   function card(g, i) {
     const cta = (g.links || []).map(l => link(l, l.primary)).join('')
-      + (g.soon || []).map(t => `<span class="btn btn--soon" aria-disabled="true"><span>${esc(t)}</span></span>`).join('');
+      + (g.soon || []).map(s => `<span class="btn btn--soon" aria-disabled="true"><span>${tx(s)}</span></span>`).join('');
     return `<article class="game" id="game-${esc(g.id)}"><div class="game__main">${cover(g, i)}<div class="game__info">`
-      + `<span class="label status status--${esc(g.status)}">${esc(g.statusText)}</span>`
-      + `<h3>${esc(g.title)}</h3>`
-      + (g.genre ? `<p class="game__genre">${esc(g.genre)}</p>` : '')
-      + (g.hook ? `<p class="game__hook">${esc(g.hook)}</p>` : '')
-      + (g.rating ? `<p class="label game__rating">${esc(g.rating)}</p>` : '')
+      + `<span class="label status status--${esc(g.status)}">${tx(g.statusText)}</span>`
+      + `<h3>${tx(g.title)}</h3>`
+      + (g.genre ? `<p class="game__genre">${tx(g.genre)}</p>` : '')
+      + (g.hook ? `<p class="game__hook">${tx(g.hook)}</p>` : '')
+      + (g.rating ? `<p class="label game__rating">${tx(g.rating)}</p>` : '')
       + (cta ? `<div class="game__cta">${cta}</div>` : '')
       + (!g.how ? tags(g.stack) : '')
       + `</div></div>${how(g)}</article>`;
   }
 
-  document.getElementById('now').innerHTML = (data.now || [])
-    .map(n => `<li><span class="label">${esc(n.label)}</span><span>${esc(n.text)}</span></li>`).join('');
-  document.getElementById('gameList').innerHTML = (data.games || []).map(card).join('');
+  /* Voxel heart for a card without a cover: its top-right edge is already chipped off */
+  function voxelHeart() {
+    const grid = document.querySelector('[data-voxels]');
+    if (!grid) return;
+    const M = [
+      '..XXX...XXX..',
+      '.XXXXX.XXXXX.',
+      'XXXXXXXXXXXXX',
+      'XXXXXXXXXXXXX',
+      'XXXXXXXXXXXXX',
+      '.XXXXXXXXXXX.',
+      '..XXXXXXXXX..',
+      '...XXXXXXX...',
+      '....XXXXX....',
+      '.....XXX.....',
+      '......X......',
+    ];
+    let s = 21;
+    const vr = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    let html = '';
+    M.forEach((row, y) => [...row].forEach((ch, x) => {
+      const broken = ch === 'X' && x + (10 - y) * 0.9 > 15.5 && vr() < 0.7;
+      if (ch !== 'X') html += '<i></i>';
+      else if (broken) html += vr() < 0.45
+        ? `<i class="chip" style="--dx:${Math.round(8 + vr() * 26)}px;--dy:${Math.round(-10 - vr() * 30)}px;--r:${Math.round(vr() * 60 - 30)}deg"></i>`
+        : '<i></i>';
+      else html += `<i class="${vr() < 0.18 ? 'v2' : 'v'}"></i>`;
+    }));
+    grid.innerHTML = html;
+  }
+
+  function renderGames() {
+    const data = window.SITE_GAMES;
+    if (!data) return;
+    // keep open "How it's made" panels open across a language switch
+    const open = [...document.querySelectorAll('.game details[open]')].map(d => d.closest('.game').id);
+    document.getElementById('now').innerHTML = (data.now || [])
+      .map(n => `<li><span class="label">${tx(n.label)}</span><span>${tx(n.text)}</span></li>`).join('');
+    document.getElementById('gameList').innerHTML = (data.games || []).map(card).join('');
+    open.forEach(id => { const d = document.querySelector(`#${id} details`); if (d) d.open = true; });
+    voxelHeart();
+  }
+
+  /* ---------- Applying a language ---------- */
+  function setLang(next, remember) {
+    lang = LANGS.includes(next) ? next : 'ru';
+    const d = DICT[lang] || {};
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => { const v = d[el.dataset.i18n]; if (v != null) el.textContent = v; });
+    document.querySelectorAll('[data-i18n-alt]').forEach(el => { const v = d[el.dataset.i18nAlt]; if (v != null) el.alt = v; });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => { const v = d[el.dataset.i18nAria]; if (v != null) el.setAttribute('aria-label', v); });
+    if (d['meta.title']) document.title = d['meta.title'];
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc && d['meta.description']) desc.content = d['meta.description'];
+    document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    if (remember) { try { localStorage.setItem('site-lang', lang); } catch (e) {} }
+    renderGames();
+    document.dispatchEvent(new CustomEvent('langchange', { detail: lang }));
+  }
+
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => {
+    if (b.dataset.lang === lang) return;
+    setLang(b.dataset.lang, true);
+    // keep a shared link pointing at the chosen language
+    const u = new URL(location.href);
+    if (u.searchParams.has('lang')) { u.searchParams.set('lang', lang); history.replaceState(null, '', u); }
+  }));
+
+  setLang(detect(), false);
 })();
 
+// ---------- Hero: faceted sky, lithographic texture, click-to-shatter ----------
 (() => {
   const canvas = document.getElementById('facets');
   const ctx = canvas.getContext('2d');
   const hero = canvas.parentElement;
   const textEl = document.getElementById('heroText');
-  // ?still — статичный кадр, как при «уменьшить движение»
+  // ?still renders one static frame, same as "reduce motion"
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches || location.search.includes('still');
 
   const BG = [236, 231, 216];
@@ -74,7 +157,7 @@
     hill:   ['#6b7a3a', '#5a6a2e', '#7d8a45', '#4d5a26', '#8c8a3c', '#b8a63e'].map(hex),
   };
 
-  // детерминированные генераторы: композиция одинаковая при каждом заходе
+  // seeded random: the composition is the same on every visit
   const mkRand = s => () => (s = (s * 16807) % 2147483647) / 2147483647;
   let rand = mkRand(7);
   const pick = arr => arr[Math.floor(rand() * arr.length)];
@@ -85,13 +168,13 @@
   let burst = null;
   let running = false, visible = true, raf = 0;
 
-  /* ---------- Фактура: литография ----------
-     Растровые точки, как в печати плакатов 30-х. Рисуется на главный экран (k = 1)
-     и плиткой 256×256 на участки (k = 0.42, tile = true). */
+  /* ---------- Texture: lithography ----------
+     Halftone dots, like 1930s poster printing. Drawn over the hero (k = 1)
+     and as a 256×256 tile over the bands below (k = 0.42, tile = true). */
   function paintLitho(s, w, h, k, tile) {
     const step = 8, period = tile ? w : 420;
     const offs = tile ? [-w, 0, w] : [0];
-    // на плитке модуляция мягче, чтобы повтор плитки не читался полосами
+    // softer modulation on the tile so its repeat does not show as stripes
     const depth = tile ? 0.22 : 0.45;
     s.fillStyle = `rgba(22,24,21,${0.1 * k})`;
     for (let j = 0; j * step < h + step; j++) {
@@ -113,7 +196,7 @@
     const s = stipple.getContext('2d');
     s.scale(dpr, dpr);
     paintLitho(s, W, H, 1, false);
-    // под текстом растра нет: правило брендбука
+    // no halftone under the text (brand book rule)
     s.clearRect(textRect.x, textRect.y, textRect.w, textRect.h);
   }
 
@@ -126,7 +209,7 @@
     document.documentElement.style.setProperty('--grain', `url(${g.toDataURL('image/png')})`);
   }
 
-  /* ---------- Грани ---------- */
+  /* ---------- Facets ---------- */
   function build() {
     const r = hero.getBoundingClientRect();
     W = r.width; H = r.height;
@@ -170,7 +253,7 @@
     if (t > hillLine) {
       col = pick(TIERS.hill);
     } else {
-      // главный клин света идёт по диагонали снизу слева вверх направо
+      // the main wedge of light runs diagonally from bottom-left to top-right
       const d = u * 0.9 + t - 1.05;
       const band = Math.exp(-(d * d) / 0.045) + (rand() - 0.5) * 0.5;
       col = band > 0.72 ? pick(TIERS.bright) : band > 0.28 ? pick(TIERS.mid) : pick(TIERS.dark);
@@ -184,7 +267,7 @@
     const dx = Math.max(r.x - x, 0, x - (r.x + r.w));
     const dy = Math.max(r.y - y, 0, y - (r.y + r.h));
     const dist = Math.hypot(dx, dy);
-    // полоса под шапкой тоже приглушена, чтобы читались пункты навигации
+    // the strip under the header is muted too, so the nav stays readable
     const nav = 0.55 * Math.max(0, 1 - Math.max(0, y - 40) / 110);
     return Math.max(0.68 * Math.max(0, 1 - dist / 260), nav);
   }
@@ -196,7 +279,7 @@
       p.y = p.by + Math.cos(t * 0.28 + p.ph) * p.amp * 0.7;
     }
 
-    // раскол: волна от точки клика, 900 мс туда и обратно
+    // shatter: a wave from the click point, 900 ms out and back
     let bp = 0;
     if (burst) {
       const e = (now - burst.t0) / 900;
@@ -209,7 +292,7 @@
     ctx.lineJoin = 'round';
 
     for (const tr of tris) {
-      // курсор отталкивает ближайшие грани; во время раскола — нет, чтобы движения не спорили
+      // the pointer pushes nearby facets away; not during a shatter, so the two motions don't fight
       const dx = tr.cx - pointer.x, dy = tr.cy - pointer.y;
       const dist = Math.hypot(dx, dy);
       const push = !burst && dist < 170 ? (1 - dist / 170) ** 2 * 26 : 0;
@@ -238,7 +321,7 @@
       ctx.restore();
     }
 
-    // лучи из одной точки за левым нижним краем; наклон зависит только от прокрутки
+    // rays from one point beyond the bottom-left corner; their tilt follows scrolling only
     const origin = { x: -W * 0.18, y: H * 1.22 };
     raySway += (scrollRot - raySway) * 0.08;
     const sway = raySway + Math.sin(t * 0.15) * 0.015;
@@ -270,6 +353,8 @@
 
   let rt = 0;
   addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(relayout, 150); });
+  // the hero text changes size with the language, so the cut-out under it is recomputed
+  document.addEventListener('langchange', relayout);
   document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; visible ? start() : stop(); }).observe(hero);
 
@@ -281,7 +366,7 @@
   addEventListener('scroll', () => { scrollRot = Math.min(scrollY / H, 1) * 0.12; }, { passive: true });
 
   canvas.addEventListener('pointerdown', e => {
-    // пока раскол не доиграл до конца, новые клики игнорируются
+    // ignore new clicks until the current shatter has finished
     if (reduce || burst) return;
     const r = hero.getBoundingClientRect();
     burst = { x: e.clientX - r.left, y: e.clientY - r.top, t0: performance.now() };
@@ -292,36 +377,6 @@
     if (!burst) burst = { x: W * 0.72, y: H * 0.4, t0: performance.now() };
     setTimeout(() => document.getElementById('games').scrollIntoView({ behavior: 'smooth' }), 450);
   });
-
-  /* ---------- Воксельное сердце для карточки новой игры ---------- */
-  (function voxelHeart() {
-    const M = [
-      '..XXX...XXX..',
-      '.XXXXX.XXXXX.',
-      'XXXXXXXXXXXXX',
-      'XXXXXXXXXXXXX',
-      'XXXXXXXXXXXXX',
-      '.XXXXXXXXXXX.',
-      '..XXXXXXXXX..',
-      '...XXXXXXX...',
-      '....XXXXX....',
-      '.....XXX.....',
-      '......X......',
-    ];
-    const vr = mkRand(21), grid = document.querySelector('[data-voxels]');
-    if (!grid) return;
-    let html = '';
-    M.forEach((row, y) => [...row].forEach((ch, x) => {
-      // правый верхний край уже отколот: часть ячеек пустые или отлетают осколками
-      const broken = ch === 'X' && x + (10 - y) * 0.9 > 15.5 && vr() < 0.7;
-      if (ch !== 'X') html += '<i></i>';
-      else if (broken) html += vr() < 0.45
-        ? `<i class="chip" style="--dx:${Math.round(8 + vr() * 26)}px;--dy:${Math.round(-10 - vr() * 30)}px;--r:${Math.round(vr() * 60 - 30)}deg"></i>`
-        : '<i></i>';
-      else html += `<i class="${vr() < 0.18 ? 'v2' : 'v'}"></i>`;
-    }));
-    grid.innerHTML = html;
-  })();
 
   buildGrain();
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(relayout);
