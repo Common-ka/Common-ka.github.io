@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <title>Даниил Игнатьев — знак «Квадрат-пиксель»</title>
+  <!-- Чёрный квадрат Малевича как воксель спереди: угол рассыпается на пиксели по диагонали бренда -->
+  <polygon points="10,44 52,44 52,62 70,62 70,102 10,102" fill="#161815"/>
+  <rect x="56" y="28" width="17" height="17" fill="#161815" transform="rotate(10 64.5 36.5)"/>
+  <rect x="80" y="16" width="13" height="13" fill="#e4bb69" transform="rotate(22 86.5 22.5)"/>
+  <rect x="100" y="6" width="9" height="9" fill="#71819e" transform="rotate(34 104.5 10.5)"/>
+  <rect x="80" y="44" width="10" height="10" fill="#a8381f" transform="rotate(16 85 49)"/>
+  <rect x="98" y="34" width="6" height="6" fill="#161815" transform="rotate(28 101 37)"/>
+  <polygon points="4,110 86,104 86,110 4,116" fill="#e4bb69"/>
+</svg>

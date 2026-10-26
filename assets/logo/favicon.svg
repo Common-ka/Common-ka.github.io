@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Упрощённый знак для 16–32 px: квадрат с выбитым углом и два пикселя; светлая подложка видна и на тёмной панели вкладок -->
+  <rect width="32" height="32" fill="#f7f4ea"/>
+  <polygon points="3,12 15,12 15,17 21,17 21,29 3,29" fill="#161815"/>
+  <rect x="18" y="5" width="7" height="7" fill="#e4bb69" transform="rotate(20 21.5 8.5)"/>
+  <rect x="25" y="14" width="4.5" height="4.5" fill="#a8381f" transform="rotate(16 27.25 16.25)"/>
+</svg>

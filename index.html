@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Даниил Игнатьев — Game Creator</title>
+  <meta name="description" content="Даниил Игнатьев: браузерные игры, сделанные с AI-агентами. Играйте прямо в браузере.">
+  <meta property="og:title" content="Даниил Игнатьев — Game Creator">
+  <meta property="og:description" content="Браузерные игры, в которые можно сыграть прямо сейчас: без установки, по одной ссылке.">
+  <meta property="og:image" content="assets/img/covers/cracker-hero-1280.webp">
+  <meta name="theme-color" content="#ece7d8">
+  <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Oswald:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav__inner">
+      <a class="nav__logo" href="#top"><img src="assets/logo/mark-light.svg" width="34" height="34" alt="Даниил Игнатьев — на главную"></a>
+      <nav class="nav__links"><a href="#games">Игры</a><a href="#about">Обо мне</a><a href="#contact">Контакты</a></nav>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <canvas id="facets" aria-hidden="true"></canvas>
+    <div class="wrap hero__content">
+      <div class="hero__text" id="heroText">
+        <p class="eyebrow"><span>AI Game Creator · Game Designer</span></p>
+        <h1 class="name"><span class="name__first">Даниил</span><span class="name__last">Игнатьев</span></h1>
+        <p class="lead">Делаю браузерные игры, в которые можно сыграть прямо сейчас: без установки, по одной ссылке.</p>
+        <p class="meta label"><span>Вьетнам · удалённо</span><b>Открыт к работе</b></p>
+        <div class="actions">
+          <a class="btn btn--primary" href="#games" id="toGames"><span>▶ Играть</span></a>
+          <a class="btn" href="#about"><span>Обо мне</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <!-- Облака: витрина игр -->
+    <section class="band band--clouds" id="games">
+      <div class="wrap">
+        <h2>Игры</h2>
+        <!-- Блок «Сейчас» и карточки собираются из games.js -->
+        <ul class="now" id="now" aria-label="Сейчас"></ul>
+        <div class="games" id="gameList"></div>
+        <noscript>
+          <p class="band__text">Витрина игр работает на JavaScript. Ссылки на игры:
+            <a href="https://www.crazygames.com/game/cracker-hero">Cracker Hero на CrazyGames</a>,
+            <a href="https://playgama.com/game/loose-change-cashier-simulator">Loose Change на Playgama</a>.</p>
+        </noscript>
+      </div>
+    </section>
+
+    <!-- Горизонт: обо мне -->
+    <section class="band band--horizon" id="about">
+      <div class="wrap">
+        <h2>Обо мне</h2>
+        <div class="about">
+          <div class="about__story">
+            <p>Раньше я автоматизировал разметку данных для ИИ. Потом сыграл в Children of Morta — и захотел делать игры сам.</p>
+            <p>Экспериментировать начал в 2021-м, всерьёз занимаюсь с 2025-го. Люблю весь цикл, от идеи до релиза, но больше всего — полировать механики, пока игра не начнёт ощущаться правильно.</p>
+            <p>Игры делаю вместе с AI-агентами: это скорость. Я придумываю механику, пишу спецификации, проверяю код и поведение игры; агенты пишут реализацию. Ответственность за сборку остаётся у меня.</p>
+          </div>
+          <aside class="plays">
+            <h3>Во что играю</h3>
+            <ul>
+              <li><b>Settlers 3</b><span>стратегия</span></li>
+              <li><b>Dawn of War</b><span>стратегия</span></li>
+              <li><b>Metro Exodus</b><span>AAA-шутер</span></li>
+              <li><b>Disco Elysium</b><span>RPG</span></li>
+              <li><b>I Am Future</b><span>для отдыха</span></li>
+            </ul>
+          </aside>
+        </div>
+        <div class="process">
+          <h3>Как я делаю игры</h3>
+          <p>Шесть шагов, которые повторяются для каждой фичи.</p>
+          <ol class="pipeline"><li>Concept</li><li>Specification</li><li>AI Implementation</li><li>Review</li><li>Iteration</li><li>Release</li></ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Холмы: работа и контакты -->
+    <section class="band band--hills" id="contact">
+      <div class="wrap hire">
+        <div>
+          <h2>Ищу работу</h2>
+          <div class="roles"><span><i>AI Game Creator</i></span><span><i>Game Designer</i></span></div>
+          <ul class="hire__facts">
+            <li>Удалённо, из Вьетнама</li>
+            <li>Браузерные игры: от прототипа до публикации на площадках</li>
+            <li>Исходники проектов покажу по запросу</li>
+          </ul>
+        </div>
+        <div class="contacts">
+          <a class="contact" href="mailto:daniil@ignatev1.ru"><span>Email</span>daniil@ignatev1.ru</a>
+          <a class="contact" href="https://t.me/daniil_ignatev" target="_blank" rel="noopener"><span>Telegram</span>@daniil_ignatev</a>
+          <a class="contact" href="https://github.com/Common-ka" target="_blank" rel="noopener"><span>GitHub</span>Common-ka</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="band band--earth">
+    <div class="wrap"><img src="assets/logo/mark-dark.svg" width="40" height="40" alt="Знак Даниила Игнатьева"><span>© 2026 Даниил Игнатьев</span></div>
+  </footer>
+
+  <script src="games.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
