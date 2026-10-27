@@ -7,8 +7,8 @@ window.SITE_GAMES = {
     {
       label: { ru: 'Сейчас', en: 'Now' },
       text: {
-        ru: 'Cracker Hero вышла в Basic Launch на CrazyGames и проходит модерацию на Playgama.',
-        en: 'Cracker Hero is in Basic Launch on CrazyGames and in review on Playgama.',
+        ru: 'Cracker Hero вышла на Playgama под названием Mine Block Breaker и идёт в Basic Launch на CrazyGames.',
+        en: 'Cracker Hero is out on Playgama as Mine Block Breaker and in Basic Launch on CrazyGames.',
       },
     },
     {
@@ -25,8 +25,8 @@ window.SITE_GAMES = {
     {
       id: 'cracker-hero',
       title: 'Cracker Hero',
-      status: 'launch', // released, launch or dev
-      statusText: 'Basic Launch · CrazyGames',
+      status: 'released', // released, launch or dev
+      statusText: { ru: 'Вышла · CrazyGames и Playgama (как Mine Block Breaker)', en: 'Released · CrazyGames and Playgama (as Mine Block Breaker)' },
       genre: { ru: '3D-аркада с физикой разрушения', en: '3D arcade with destruction physics' },
       hook: {
         ru: 'Оттягиваешь кубическую голову с мечом, запускаешь — и арена разлетается по блокам. Баффы усиливают удар, награды открывают новое оружие.',
@@ -42,8 +42,8 @@ window.SITE_GAMES = {
       },
       links: [
         { label: '▶ CrazyGames', url: 'https://www.crazygames.com/game/cracker-hero', primary: true },
+        { label: '▶ Playgama', url: 'https://playgama.com/game/mine-block-breaker' },
       ],
-      soon: [{ ru: 'Скоро на Playgama', en: 'Coming to Playgama' }],
       stack: ['TypeScript', 'Babylon.js', 'Havok Physics', 'Vite'],
       how: {
         notes: [
