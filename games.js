@@ -7,15 +7,15 @@ window.SITE_GAMES = {
     {
       label: { ru: 'Сейчас', en: 'Now' },
       text: {
-        ru: 'Cracker Hero вышла на Playgama под названием Mine Block Breaker и идёт в Basic Launch на CrazyGames.',
-        en: 'Cracker Hero is out on Playgama as Mine Block Breaker and in Basic Launch on CrazyGames.',
+        ru: 'Block Idle Smasher готова и скоро выйдет на CrazyGames.',
+        en: 'Block Idle Smasher is finished and coming to CrazyGames soon.',
       },
     },
     {
-      label: { ru: 'В работе', en: 'In progress' },
+      label: { ru: 'Недавно', en: 'Recently' },
       text: {
-        ru: 'Новая idle-игра о разрушении воксельных фигур. Название пока рабочее.',
-        en: 'A new idle game about smashing voxel figures. The title is a working one for now.',
+        ru: 'Cracker Hero вышла на Playgama под названием Mine Block Breaker и идёт в Basic Launch на CrazyGames.',
+        en: 'Cracker Hero came out on Playgama as Mine Block Breaker and is in Basic Launch on CrazyGames.',
       },
     },
   ],
@@ -23,9 +23,95 @@ window.SITE_GAMES = {
   // Game cards, top to bottom
   games: [
     {
+      id: 'block-idle-smasher',
+      title: 'Block Idle Smasher',
+      status: 'launch', // released, launch or dev
+      statusText: { ru: 'Готова к выходу', en: 'Ready for release' },
+      genre: { ru: '3D-инкременталка про разрушение', en: '3D incremental game about destruction' },
+      hook: {
+        ru: 'Шарики сами крошат воксельные фигуры, блок за блоком. Каждый разбитый кусок приносит монеты на новые шарики, лазеры и улучшения, а дальше ждут боссы, навыки и престиж.',
+        en: 'Balls chew through voxel figures on their own, block by block. Every chunk you break earns coins for more balls, lasers and upgrades, with bosses, skills and prestige further on.',
+      },
+      cover: {
+        image: 'assets/img/covers/block-idle-smasher', // + -640.webp and -1280.webp
+        alt: {
+          ru: 'Обложка Block Idle Smasher: красный шар на огненном хвосте врезается в воксельную машину, блоки разлетаются',
+          en: 'Block Idle Smasher cover: a red ball with a fiery trail crashes into a voxel car, sending blocks flying',
+        },
+      },
+      soon: [{ ru: 'Скоро на CrazyGames', en: 'Coming to CrazyGames' }],
+      stack: ['Three.js', 'Rapier', 'TypeScript', 'Vite'],
+      how: {
+        notes: [
+          {
+            title: { ru: 'Физика разрушения', en: 'Destruction physics' },
+            text: {
+              ru: 'Симуляция отделена от рендера. Источник истины — сетка прочности вокселей: Rapier находит самое раннее столкновение на каждом фиксированном шаге, а скол растёт от точки контакта.',
+              en: 'The simulation is separate from rendering. A voxel durability grid is the source of truth: Rapier finds the earliest collision on each fixed step, and the chip grows out from the contact point.',
+            },
+          },
+          {
+            title: { ru: 'Экономика', en: 'Economy' },
+            text: {
+              ru: 'Баланс проверял автоматическими забегами на настоящей экономике: они показывают, сколько реально занимает прогресс, без подставных монет.',
+              en: 'I tested the balance with automated runs on the real economy: they show how long progress actually takes, with no fake coins.',
+            },
+          },
+        ],
+      },
+    },
+
+    {
+      id: 'loose-change',
+      title: 'Loose Change',
+      status: 'released',
+      statusText: { ru: 'Вышла · Playgama и Yandex Games', en: 'Released · Playgama and Yandex Games' },
+      genre: { ru: 'Головоломка-сортировка · Cashier Simulator', en: 'Sorting puzzle · Cashier Simulator' },
+      hook: {
+        ru: 'Переноси одинаковые стопки монет между ячейками: десять мелких превращаются в две крупнее. Новые монеты — по кнопке Deal.',
+        en: 'Move matching stacks of coins between slots: ten small coins merge into two bigger ones. New coins arrive with the Deal button.',
+      },
+      rating: { ru: '★ 4,3 / 5 на Playgama · 96 оценок', en: '★ 4.3 / 5 on Playgama · 96 ratings' },
+      cover: {
+        image: 'assets/img/covers/loose-change',
+        alt: {
+          ru: 'Обложка Loose Change: Cashier Simulator — рука кладёт монету на поле с ячейками',
+          en: 'Loose Change: Cashier Simulator cover — a hand places a coin on a board of slots',
+        },
+      },
+      links: [
+        { label: '▶ Playgama', url: 'https://playgama.com/game/loose-change-cashier-simulator', primary: true },
+        { label: { ru: '▶ Яндекс Игры', en: '▶ Yandex Games' }, url: 'https://yandex.ru/games/app/razmeniai-meloch-simuliator-kassira-540531?lang=ru' },
+      ],
+      stack: ['Unity', 'C#', 'WebGL', 'UI Toolkit'],
+      how: {
+        notes: [
+          {
+            title: { ru: 'Архитектура', en: 'Architecture' },
+            text: {
+              ru: 'C# models и controllers хранят состояние поля и правила ходов. UI Toolkit и views получают изменения через Event Bus. Saves, ads и pause вынесены в общий platform layer.',
+              en: 'C# models and controllers hold the board state and move rules. UI Toolkit views receive changes through an Event Bus. Saves, ads and pause live in a shared platform layer.',
+            },
+          },
+          {
+            title: { ru: 'Процесс разработки', en: 'Development process' },
+            text: {
+              ru: 'Ставил задачи AI-агентам, проверял код и игровые состояния, организовывал исправления. Подготовил WebGL-сборки и довёл игру до публикации на двух платформах.',
+              en: 'I set tasks for AI agents, reviewed the code and game states, and organised fixes. I prepared the WebGL builds and shipped the game on two platforms.',
+            },
+          },
+        ],
+        shots: [
+          { src: 'assets/img/loose-change-board.webp', w: 716, h: 1273, alt: { ru: 'Игровое поле', en: 'Game board' }, caption: { ru: 'Игровое поле', en: 'Game board' } },
+          { src: 'assets/img/loose-change-anim.webp', w: 716, h: 1273, alt: { ru: 'Анимация слияния монет', en: 'Coin merge animation' }, caption: { ru: 'Слияние монет', en: 'Coin merge' } },
+        ],
+      },
+    },
+
+    {
       id: 'cracker-hero',
       title: 'Cracker Hero',
-      status: 'released', // released, launch or dev
+      status: 'released',
       statusText: { ru: 'Вышла · CrazyGames и Playgama (как Mine Block Breaker)', en: 'Released · CrazyGames and Playgama (as Mine Block Breaker)' },
       genre: { ru: '3D-аркада с физикой разрушения', en: '3D arcade with destruction physics' },
       hook: {
@@ -99,67 +185,6 @@ window.SITE_GAMES = {
           ],
         },
       },
-    },
-
-    {
-      id: 'loose-change',
-      title: 'Loose Change',
-      status: 'released',
-      statusText: { ru: 'Вышла · Playgama и Yandex Games', en: 'Released · Playgama and Yandex Games' },
-      genre: { ru: 'Головоломка-сортировка · Cashier Simulator', en: 'Sorting puzzle · Cashier Simulator' },
-      hook: {
-        ru: 'Переноси одинаковые стопки монет между ячейками: десять мелких превращаются в две крупнее. Новые монеты — по кнопке Deal.',
-        en: 'Move matching stacks of coins between slots: ten small coins merge into two bigger ones. New coins arrive with the Deal button.',
-      },
-      rating: { ru: '★ 4,3 / 5 на Playgama · 96 оценок', en: '★ 4.3 / 5 on Playgama · 96 ratings' },
-      cover: {
-        image: 'assets/img/covers/loose-change',
-        alt: {
-          ru: 'Обложка Loose Change: Cashier Simulator — рука кладёт монету на поле с ячейками',
-          en: 'Loose Change: Cashier Simulator cover — a hand places a coin on a board of slots',
-        },
-      },
-      links: [
-        { label: '▶ Playgama', url: 'https://playgama.com/game/loose-change-cashier-simulator', primary: true },
-        { label: { ru: '▶ Яндекс Игры', en: '▶ Yandex Games' }, url: 'https://yandex.ru/games/app/razmeniai-meloch-simuliator-kassira-540531?lang=ru' },
-      ],
-      stack: ['Unity', 'C#', 'WebGL', 'UI Toolkit'],
-      how: {
-        notes: [
-          {
-            title: { ru: 'Архитектура', en: 'Architecture' },
-            text: {
-              ru: 'C# models и controllers хранят состояние поля и правила ходов. UI Toolkit и views получают изменения через Event Bus. Saves, ads и pause вынесены в общий platform layer.',
-              en: 'C# models and controllers hold the board state and move rules. UI Toolkit views receive changes through an Event Bus. Saves, ads and pause live in a shared platform layer.',
-            },
-          },
-          {
-            title: { ru: 'Процесс разработки', en: 'Development process' },
-            text: {
-              ru: 'Ставил задачи AI-агентам, проверял код и игровые состояния, организовывал исправления. Подготовил WebGL-сборки и довёл игру до публикации на двух платформах.',
-              en: 'I set tasks for AI agents, reviewed the code and game states, and organised fixes. I prepared the WebGL builds and shipped the game on two platforms.',
-            },
-          },
-        ],
-        shots: [
-          { src: 'assets/img/loose-change-board.webp', w: 716, h: 1273, alt: { ru: 'Игровое поле', en: 'Game board' }, caption: { ru: 'Игровое поле', en: 'Game board' } },
-          { src: 'assets/img/loose-change-anim.webp', w: 716, h: 1273, alt: { ru: 'Анимация слияния монет', en: 'Coin merge animation' }, caption: { ru: 'Слияние монет', en: 'Coin merge' } },
-        ],
-      },
-    },
-
-    {
-      id: 'voxel-idle',
-      title: { ru: 'Новая игра', en: 'New game' },
-      status: 'dev',
-      statusText: { ru: 'В разработке', en: 'In development' },
-      genre: { ru: 'Idle-разрушение · рабочее название скрыто', en: 'Idle destruction · working title under wraps' },
-      hook: {
-        ru: 'Шарики разбивают воксельные фигуры — куб, сердце, дерево, машину — с настоящей физикой скола. Каждый снятый кусочек приносит монеты на новые шарики и улучшения.',
-        en: 'Balls smash voxel figures — a cube, a heart, a tree, a car — with real chipping physics. Every chunk knocked off earns coins for new balls and upgrades.',
-      },
-      cover: { placeholder: 'voxels' }, // no cover yet: a voxel heart is drawn instead
-      stack: ['Three.js', 'Rapier', 'TypeScript'],
     },
   ],
 };
