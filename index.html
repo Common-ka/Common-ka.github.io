@@ -14,6 +14,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Oswald:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <!-- Hide the page until fonts, language and the hero are ready, so it appears once instead of jumping; reveal anyway after 3 s -->
+  <script>document.documentElement.classList.add('is-loading'); setTimeout(() => document.documentElement.classList.remove('is-loading'), 3000);</script>
 </head>
 <body>
   <!-- Visible text below is the Russian fallback; main.js swaps it using i18n.js -->

@@ -14,7 +14,10 @@
   --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
 }
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; background: var(--bg); }
+/* main.js removes .is-loading once the first frame is ready */
+.is-loading body { opacity: 0; }
+body { transition: opacity .25s ease-out; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.65 var(--font-sans); -webkit-font-smoothing: antialiased; }
 a { color: inherit; }
 img { display: block; max-width: 100%; height: auto; }
@@ -254,5 +257,5 @@ img { display: block; max-width: 100%; height: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .btn, .btn--primary::before, .contact, .how summary::after { transition: none; }
+  body, .btn, .btn--primary::before, .contact, .how summary::after { transition: none; }
 }

@@ -344,7 +344,8 @@
   }
 
   function start() {
-    if (running || reduce || !visible || document.hidden) return;
+    // !stipple: not built yet (waiting for fonts)
+    if (running || reduce || !visible || document.hidden || !stipple) return;
     running = true; raf = requestAnimationFrame(frame);
   }
   function stop() { running = false; cancelAnimationFrame(raf); }
@@ -378,7 +379,15 @@
     setTimeout(() => document.getElementById('games').scrollIntoView({ behavior: 'smooth' }), 450);
   });
 
+  // Build once the web fonts are in: the cut-out under the text depends on their metrics.
+  // Fonts later than 1.5 s still trigger a rebuild, but the page is not held back for them.
   buildGrain();
-  (document.fonts ? document.fonts.ready : Promise.resolve()).then(relayout);
-  relayout();
+  const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
+  let late = false;
+  Promise.race([fonts, new Promise(r => setTimeout(() => { late = true; r(); }, 1500))]).then(() => {
+    relayout();
+    if (late) fonts.then(relayout);
+    // the first frame is queued by relayout, so reveal right after it
+    requestAnimationFrame(() => document.documentElement.classList.remove('is-loading'));
+  });
 })();
